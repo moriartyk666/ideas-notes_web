@@ -37,3 +37,4 @@
 - **Фильтрация и поиск**: Поиск заметок по ключевым словам и фильтрация по категориям или популярности.
 
 ## Примерный дизайн проекта
+https://www.figma.com/design/IXSzdNK847y6eWXSoEPPb4/fullstack_front?node-id=0-1&t=A6NA6KPxmvYqpIc9-1
