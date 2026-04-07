@@ -1,4 +1,4 @@
-.home-page {
+.profile-page {
   flex-grow: 1;
   margin-left: 200px;
   background-color: #7bb9f2;
@@ -9,7 +9,8 @@
   align-items: center;
 }
 
-.home-page h1 {
+.profile-page h1 {
   font-size: 48px;
-  margin-bottom: 40px;
+  color: #000;
+  margin-top: 0;
 }

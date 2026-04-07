@@ -1,7 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import SideNav from './components/SideNav/SideNav';
 import HomePage from './pages/HomePage';
+import AuthPage from './pages/AuthPage';
+import ProfilePage from './pages/ProfilePage';
 import './App.css';
 
 function App() {
@@ -9,16 +11,24 @@ function App() {
     <Router>
       <div className="app-container">
         <Routes>
-          {/* Страница авторизации (без сайдбара) */}
-          <Route path="/auth" element={<div>Тут будет AuthPage</div>} />
+          <Route path="/" element={<Navigate to="/auth" />} />
+          <Route path="/auth" element={<AuthPage />} />
           
-          {/* Остальные страницы (с сайдбаром) */}
-          <Route path="*" element={
+          <Route path="/home" element={
             <>
               <SideNav />
               <HomePage />
             </>
           } />
+
+          <Route path="/profile" element={
+            <>
+              <SideNav />
+              <ProfilePage />
+            </>
+          } />
+
+          <Route path="*" element={<Navigate to="/auth" />} />
         </Routes>
       </div>
     </Router>

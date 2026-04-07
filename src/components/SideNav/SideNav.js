@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SideNav.css';
 import homeIcon from '../../assets/icons/home.svg';
 import savedIcon from '../../assets/icons/saved.svg';
@@ -8,6 +9,7 @@ import profileIcon from '../../assets/icons/profile.svg';
 
 const SideNav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -18,7 +20,7 @@ const SideNav = () => {
       <div className="nav-top">
         {isOpen && (
           <>
-            <div className="nav-item">
+            <div className="nav-item" onClick={() => navigate('/home')}>
               <img src={homeIcon} alt="" />
               <span>Главная</span>
             </div>
@@ -34,7 +36,7 @@ const SideNav = () => {
               <img src={plusIcon} alt="" />
               <span>Создать</span>
             </div>
-            <div className="nav-item">
+            <div className="nav-item" onClick={() => navigate('/profile')}>
               <img src={profileIcon} alt="" />
               <span>Профиль</span>
             </div>
