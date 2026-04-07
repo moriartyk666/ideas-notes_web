@@ -38,3 +38,11 @@
 
 ## Примерный дизайн проекта
 https://www.figma.com/design/IXSzdNK847y6eWXSoEPPb4/fullstack_front?node-id=0-1&t=A6NA6KPxmvYqpIc9-1
+
+## Код для запуска веб приложения
+
+- `npm install react-scripts react react-dom` 
+
+## Доступные скрипты
+- `npm run server` - Запуск json-server
+- `npm start` - запуск development сервера
