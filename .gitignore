@@ -21,3 +21,16 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Виртуальное окружение
+.venv/
+venv/
+env/
+
+# Кэш Python
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# База данных
+db.sqlite3
