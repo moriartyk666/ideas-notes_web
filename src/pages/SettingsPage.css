@@ -1,0 +1,76 @@
+.settings-page {
+  flex-grow: 1;
+  margin-left: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.settings-box {
+  background-color: #d9d9d9;
+  border: 4px solid #3b2894;
+  border-radius: 50px;
+  width: 100%;
+  max-width: 500px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.settings-title {
+  font-family: 'serif';
+  font-style: italic;
+  font-size: 36px;
+  margin-bottom: 40px;
+  color: #000;
+}
+
+.settings-section {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.settings-section h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.theme-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.theme-btn {
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #8e8383;
+  color: white;
+  transition: transform 0.2s;
+}
+
+.theme-btn:hover {
+  transform: scale(1.05);
+}
+
+.logout-btn {
+  background-color: #ff1111;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 15px 40px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.logout-btn:hover {
+  opacity: 0.9;
+}

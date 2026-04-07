@@ -1,15 +1,30 @@
-.home-page {
-  flex-grow: 1;
+.home-page,
+.profile-page,
+.saved-page,
+.create-note-page,
+.settings-page {
+  flex: 1;
   margin-left: 200px;
-  background-color: #7bb9f2;
+  background-color: var(--bg-color);
   min-height: 100vh;
   padding: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
-.home-page h1 {
+.notes-container {
+  width: 100%;
+  max-width: 850px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
   font-size: 48px;
+  margin-top: 0;
   margin-bottom: 40px;
+  text-align: center;
 }

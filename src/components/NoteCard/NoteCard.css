@@ -1,36 +1,42 @@
 .note-card {
-  box-sizing: border-box;
   background-color: #d9d9d9;
   border-radius: 25px;
-  padding: 30px 40px;
+  padding: 25px 35px;
   margin-bottom: 25px;
   width: 100%;
   max-width: 850px;
-  min-height: 200px;
+  height: 210px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  color: #000;
 }
 
 .note-content h3 {
-  font-size: 32px;
+  font-size: 30px;
   margin: 0;
   font-weight: 400;
   font-style: italic;
 }
 
 .author {
-  font-size: 24px;
+  font-size: 22px;
   color: #000;
-  margin-top: 10px;
+  margin-top: 5px;
   font-style: italic;
 }
 
 .note-footer {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+}
+
+.left-icons {
+  display: flex;
+  flex-direction: row;
   gap: 20px;
-  margin-top: 20px;
 }
 
 .icon-btn {
@@ -38,12 +44,23 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .icon-btn img {
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+}
+
+.active-like img {
+  filter: invert(15%) sepia(95%) saturate(6932%) hue-rotate(358deg) brightness(95%) contrast(112%);
+}
+
+.active-save img {
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(190deg) brightness(118%) contrast(119%);
 }

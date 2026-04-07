@@ -24,15 +24,15 @@ const SideNav = () => {
               <img src={homeIcon} alt="" />
               <span>Главная</span>
             </div>
-            <div className="nav-item">
+            <div className="nav-item" onClick={() => navigate('/saved')}>
               <img src={savedIcon} alt="" />
               <span>Сохранённое</span>
             </div>
-            <div className="nav-item">
+            <div className="nav-item" onClick={() => navigate('/settings')}>
               <img src={settingsIcon} alt="" />
               <span>Настройки</span>
             </div>
-            <div className="nav-item">
+            <div className="nav-item" onClick={() => navigate('/create')}>
               <img src={plusIcon} alt="" />
               <span>Создать</span>
             </div>
