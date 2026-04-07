@@ -46,3 +46,18 @@ https://www.figma.com/design/IXSzdNK847y6eWXSoEPPb4/fullstack_front?node-id=0-1&
 ## Доступные скрипты
 - `npm run server` - Запуск json-server
 - `npm start` - запуск development сервера
+
+# Backend
+
+## Загрузка нужных библиотек
+- `cd backend`
+- `python3 -m venv env`
+- `source env/bin/activate`
+- `pip install -r requirements.txt`
+
+## Запуск бекенда
+- `cd app`
+- `./manage.py runserver`
+
+логин - 'Abdurahim'
+пароль - 'yahyoyev'
