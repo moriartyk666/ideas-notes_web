@@ -11,8 +11,9 @@ const HomePage = () => {
       try {
         const response = await getNotes();
         // Защита: если с бэкенда пришел не массив, ставим пустой массив
-        if (Array.isArray(response.data)) {
-          setNotes(response.data);
+        const data = response.data.results || response.data;
+        if (Array.isArray(data)) {
+          setNotes(data);
         } else {
           setNotes([]);
         }
@@ -34,7 +35,11 @@ const HomePage = () => {
               key={note.id} 
               id={note.id} 
               title={note.title} 
-              author={note.author_name} 
+              author={note.author_name}
+              // Добавляем передачу статусов из базы
+              initialIsLiked={note.is_liked}
+              initialIsSaved={note.is_saved}
+              initialLikesCount={note.likes_count}
             />
           ))
         ) : (

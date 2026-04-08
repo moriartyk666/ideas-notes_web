@@ -7,21 +7,29 @@ const ProfilePage = () => {
   const [notes, setNotes] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isSelectionMode, setIsSelectionMode] = useState(false);
+  
+  // Берем данные текущего пользователя из памяти
+  const currentUsername = localStorage.getItem('username') || 'Пользователь';
+  const currentUserId = localStorage.getItem('user_id');
 
   useEffect(() => {
     fetchMyNotes();
   }, []);
 
-const fetchMyNotes = async () => {
-  const currentUserId = localStorage.getItem('user_id');
-  try {
-    const response = await getNotes();
-    const myNotes = response.data.filter(note => String(note.author) === String(currentUserId));
-    setNotes(myNotes);
-  } catch (error) {
-    console.error(error);
-  }
-};
+  const fetchMyNotes = async () => {
+    try {
+      const response = await getNotes();
+      const data = response.data.results || response.data;
+      
+      if (Array.isArray(data)) {
+        // Фильтруем идеи текущего пользователя
+        const myNotes = data.filter(note => String(note.author) === String(currentUserId));
+        setNotes(myNotes);
+      }
+    } catch (error) {
+      console.error("Ошибка загрузки профиля:", error);
+    }
+  };
 
   const toggleSelect = (id) => {
     if (selectedIds.includes(id)) {
@@ -35,12 +43,9 @@ const fetchMyNotes = async () => {
     if (!window.confirm(`Удалить выбранные идеи (${selectedIds.length})?`)) return;
 
     try {
-      // Удаляем каждую выбранную заметку на сервере
       for (let id of selectedIds) {
         await deleteNote(id);
       }
-      
-      // Обновляем список на экране после успешного удаления
       setNotes(notes.filter(note => !selectedIds.includes(note.id)));
       setSelectedIds([]);
       setIsSelectionMode(false);
@@ -53,7 +58,7 @@ const fetchMyNotes = async () => {
   return (
     <div className="profile-page">
       <div className="profile-header">
-        <h1>Мои идеи</h1>
+        <h1>Мои идеи ({currentUsername})</h1>
         <div className="profile-actions">
           {!isSelectionMode ? (
             <button className="profile-btn" onClick={() => setIsSelectionMode(true)}>Выбрать</button>
@@ -80,7 +85,15 @@ const fetchMyNotes = async () => {
                   />
                 </div>
               )}
-              <NoteCard id={note.id} title={note.title} author={note.author_name} />
+              <NoteCard 
+                id={note.id} 
+                title={note.title} 
+                author={note.author_name}
+                // Теперь статусы будут подхватываться и в профиле
+                initialIsLiked={note.is_liked}
+                initialIsSaved={note.is_saved}
+                initialLikesCount={note.likes_count}
+              />
             </div>
           ))
         ) : (
