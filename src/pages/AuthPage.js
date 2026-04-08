@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loginUser, registerUser } from '../api';
 import './AuthPage.css';
 
 const AuthPage = () => {
@@ -13,23 +14,47 @@ const AuthPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-const handleLogin = (e) => {
+  // Настоящий вход через Бэкенд
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (login === 'admin' && password === 'admin') {
+    try {
+      const response = await loginUser(login, password);
+      
+      // Сохраняем данные, пришедшие от MyTokenObtainPairSerializer
+      localStorage.setItem('access', response.data.access);
+      localStorage.setItem('refresh', response.data.refresh);
+      localStorage.setItem('user_id', response.data.user_id); 
+      localStorage.setItem('username', login);
+
       navigate('/home');
-    } else {
-      alert('Неверный логин или пароль');
+    } catch (err) {
+      console.error("Ошибка входа:", err.response?.data);
+      alert('Неверный логин или пароль. Проверьте, запущен ли бэкенд.');
     }
   };
 
-  const handleRegister = (e) => {
+  // Настоящая регистрация через Бэкенд
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert('Пароли не совпадают!');
       return;
     }
-    setMessage('Вы успешно зарегистрированы! Теперь авторизуйтесь.');
-    switchMode('login');
+
+    try {
+      await registerUser({ 
+        username: login, 
+        email: email, 
+        password: password 
+      });
+
+      setMessage('Вы успешно зарегистрированы! Теперь авторизуйтесь.');
+      switchMode('login');
+    } catch (err) {
+      console.error("Ошибка регистрации:", err.response?.data);
+      const errorMsg = err.response?.data?.username || "Ошибка регистрации (возможно, логин занят)";
+      alert(errorMsg);
+    }
   };
 
   const handleForgot = (e) => {

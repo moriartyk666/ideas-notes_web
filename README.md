@@ -60,4 +60,4 @@ https://www.figma.com/design/IXSzdNK847y6eWXSoEPPb4/fullstack_front?node-id=0-1&
 - `./manage.py runserver`
 
 логин - 'Abdurahim'
-пароль - 'yahyoyev'
+пароль - '12345678'

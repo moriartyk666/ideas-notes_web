@@ -17,8 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from users.views import MyTokenObtainPairView, RegisterView
+from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('notes.urls')),
+    # Подключаем всё к api/, чтобы пути были /api/notes/, /api/token/ и т.д.
+    path('api/', include('notes.urls')), 
+    path('api/users/register/', RegisterView.as_view()),
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NoteCard from '../components/NoteCard/NoteCard';
+import { getNotes, deleteNote } from '../api';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
-  const [notes, setNotes] = useState([
-    { id: 1, title: 'Моя идея 1', author: 'Я' },
-    { id: 2, title: 'Моя идея 2', author: 'Я' },
-    { id: 3, title: 'Моя идея 3', author: 'Я' }
-  ]);
-
+  const [notes, setNotes] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isSelectionMode, setIsSelectionMode] = useState(false);
+
+  useEffect(() => {
+    fetchMyNotes();
+  }, []);
+
+const fetchMyNotes = async () => {
+  const currentUserId = localStorage.getItem('user_id');
+  try {
+    const response = await getNotes();
+    const myNotes = response.data.filter(note => String(note.author) === String(currentUserId));
+    setNotes(myNotes);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const toggleSelect = (id) => {
     if (selectedIds.includes(id)) {
@@ -20,10 +31,23 @@ const ProfilePage = () => {
     }
   };
 
-  const deleteSelected = () => {
-    setNotes(notes.filter(note => !selectedIds.includes(note.id)));
-    setSelectedIds([]);
-    setIsSelectionMode(false);
+  const deleteSelected = async () => {
+    if (!window.confirm(`Удалить выбранные идеи (${selectedIds.length})?`)) return;
+
+    try {
+      // Удаляем каждую выбранную заметку на сервере
+      for (let id of selectedIds) {
+        await deleteNote(id);
+      }
+      
+      // Обновляем список на экране после успешного удаления
+      setNotes(notes.filter(note => !selectedIds.includes(note.id)));
+      setSelectedIds([]);
+      setIsSelectionMode(false);
+    } catch (error) {
+      console.error("Ошибка при удалении:", error);
+      alert("Произошла ошибка при удалении заметок из базы.");
+    }
   };
 
   return (
@@ -43,21 +67,25 @@ const ProfilePage = () => {
       </div>
 
       <div className="notes-container">
-        {notes.map(note => (
-          <div key={note.id} className="note-selection-wrapper">
-            {isSelectionMode && (
-              <div className="checkbox-container">
-                <input 
-                  type="checkbox" 
-                  className="custom-checkbox" 
-                  checked={selectedIds.includes(note.id)}
-                  onChange={() => toggleSelect(note.id)}
-                />
-              </div>
-            )}
-            <NoteCard id={note.id} title={note.title} author={note.author} />
-          </div>
-        ))}
+        {notes.length > 0 ? (
+          notes.map(note => (
+            <div key={note.id} className="note-selection-wrapper">
+              {isSelectionMode && (
+                <div className="checkbox-container">
+                  <input 
+                    type="checkbox" 
+                    className="custom-checkbox" 
+                    checked={selectedIds.includes(note.id)}
+                    onChange={() => toggleSelect(note.id)}
+                  />
+                </div>
+              )}
+              <NoteCard id={note.id} title={note.title} author={note.author_name} />
+            </div>
+          ))
+        ) : (
+          <p style={{fontSize: '20px', fontStyle: 'italic'}}>У вас пока нет созданных идей.</p>
+        )}
       </div>
     </div>
   );

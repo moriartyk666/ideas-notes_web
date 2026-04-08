@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import api, { toggleLike, toggleBookmark } from '../api'; // Импорт базового api для загрузки данных
 import './NotePage.css';
 import likeIcon from '../assets/icons/like.svg';
 import commentIcon from '../assets/icons/comment.svg';
@@ -9,16 +10,51 @@ const NotePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const [note, setNote] = useState(null); // Данные идеи
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [likesCount, setLikesCount] = useState(10);
+  const [likesCount, setLikesCount] = useState(0);
   const [showLikers, setShowLikers] = useState(false);
   const [showComments, setShowComments] = useState(false);
 
-  const toggleLike = () => {
-    setIsLiked(!isLiked);
-    setLikesCount(isLiked ? likesCount - 1 : likesCount + 1);
+  // Загружаем данные идеи при открытии страницы
+  useEffect(() => {
+    const fetchNote = async () => {
+      try {
+        const response = await api.get(`notes/${id}/`);
+        const data = response.data;
+        setNote(data);
+        setIsLiked(data.is_liked || false);
+        setIsSaved(data.is_saved || false);
+        setLikesCount(data.likes_count || 0);
+      } catch (err) {
+        console.error("Ошибка загрузки идеи", err);
+      }
+    };
+    fetchNote();
+  }, [id]);
+
+  const handleToggleLike = async () => {
+    try {
+      await toggleLike(id);
+      setIsLiked(!isLiked);
+      setLikesCount(isLiked ? likesCount - 1 : likesCount + 1);
+    } catch (err) {
+      alert("Ошибка. Вы авторизованы?");
+    }
   };
+
+  const handleToggleSave = async () => {
+    try {
+      await toggleBookmark(id);
+      setIsSaved(!isSaved);
+    } catch (err) {
+      alert("Ошибка сохранения");
+    }
+  };
+
+  // Пока данные загружаются, показываем пустой экран
+  if (!note) return <div className="note-detail-page">Загрузка...</div>;
 
   return (
     <div className="note-detail-page">
@@ -29,17 +65,15 @@ const NotePage = () => {
       </div>
       
       <div className="note-detail-box">
-        <h1 className="detail-title">Название идеи {id}</h1>
+        <h1 className="detail-title">{note.title}</h1>
         
         <p className="detail-text">
-          Это расширенный режим вашей идеи. Здесь пользователь может прочитать полный текст, 
-          который автор решил опубликовать. Мы настроили дизайн так, чтобы всё было 
-          крупно и удобно для чтения.
+          {note.text}
         </p>
         
         <div className="detail-info">
-          <p className="detail-author">автор {id}</p>
-          <p className="detail-date">07.04.2026 12:00</p>
+          <p className="detail-author">автор {note.author_name}</p>
+          <p className="detail-date">{new Date(note.created_at).toLocaleString('ru-RU')}</p>
         </div>
 
         <div className="detail-footer">
@@ -47,7 +81,7 @@ const NotePage = () => {
             <div className="like-section">
               <button 
                 className={`icon-btn ${isLiked ? 'active-like' : ''}`} 
-                onClick={toggleLike}
+                onClick={handleToggleLike}
               >
                 <img src={likeIcon} alt="" />
               </button>
@@ -63,7 +97,7 @@ const NotePage = () => {
           
           <button 
             className={`icon-btn ${isSaved ? 'active-save' : ''}`} 
-            onClick={() => setIsSaved(!isSaved)}
+            onClick={handleToggleSave}
           >
             <img src={bookmarkIcon} alt="" />
           </button>
@@ -72,13 +106,14 @@ const NotePage = () => {
         {showLikers && (
           <div className="likers-list">
             <h4>Понравилось:</h4>
-            <p>Пользователь 1, Пользователь 2, Абдурахим</p>
+            <p>Функция загрузки пользователей в разработке</p>
           </div>
         )}
 
         {showComments && (
           <div className="comments-section">
             <h3>Комментарии</h3>
+            {/* Это пока демо-комментарии из твоего верстака, бэкенд для них подключим позже */}
             <div className="comment-item">
               <b>Иван:</b> Отличная задумка!
             </div>

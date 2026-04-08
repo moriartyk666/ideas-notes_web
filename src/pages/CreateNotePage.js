@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createNote } from '../api';
 import './CreateNotePage.css';
 
 const CreateNotePage = () => {
@@ -7,13 +8,28 @@ const CreateNotePage = () => {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
 
-  const handlePublish = (e) => {
+  const handlePublish = async (e) => {
     e.preventDefault();
-    if (!title || !text) {
-      alert("Пожалуйста, заполните все поля");
+    // Теперь проверяем токен, чтобы убедиться, что пользователь вошел
+    const token = localStorage.getItem('access');
+
+    if (!token) {
+      alert("Ошибка авторизации. Попробуйте перезайти в аккаунт.");
+      navigate('/auth');
       return;
     }
-    navigate('/home');
+
+    try {
+      // Отправляем только title и text. Автор определится на бэкенде автоматически!
+      await createNote({
+        title: title,
+        text: text
+      });
+      navigate('/home');
+    } catch (error) {
+      console.error(error);
+      alert("Ошибка публикации. Возможно, сессия устарела.");
+    }
   };
 
   return (
@@ -36,7 +52,7 @@ const CreateNotePage = () => {
           Опубликовать
         </button>
       </div>
-    </div>
+    </div>  
   );
 };
 
