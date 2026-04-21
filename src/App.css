@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.theme-standard {
+  --bg-color: #7bb9f2;
+  --text-color: #000;
+}
+
+.theme-light {
+  --bg-color: #f0f8ff;
+  --text-color: #333;
+}
+
+.theme-dark {
+  --bg-color: #1a1a2e;
+  --text-color: #fff;
+}
